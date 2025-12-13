@@ -1,14 +1,15 @@
 package model;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class SelectionSort implements SortAlgorithm {
-  public <T extends Comparable<? super T>> void execute(List<T> list) {
+  public <T> void execute(List<T> list, Comparator<? super T> comp) {
     int n = list.size();
     for (int i = 0; i < n - 1; i++) {
       int minIndex = i;
       for (int j = i + 1; j < n; j++) {
-        if (list.get(j).compareTo(list.get(minIndex)) < 0) {
+        if (comp.compare(list.get(j), list.get(minIndex)) < 0) {
           minIndex = j;
         }
       }
