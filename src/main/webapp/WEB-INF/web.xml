@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>Sort Visualizer</display-name>
+	<error-page>
+    <location>/WEB-INF/views/home.jsp</location>
+  </error-page>
+</web-app>
