@@ -1,0 +1,151 @@
+@charset "UTF-8";
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #111;
+  color: #ccc;
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 32px;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  border: none;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+hr {
+  border-color: #333;
+  width: 100%;
+}
+
+img {
+  width: 100%;
+}
+
+label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 4px;
+}
+
+.btn {
+  background-color: #fff;
+  border-radius: 8px;
+  color: #444;
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #ccc;
+}
+
+.card {
+  background-color: #222;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.layout {
+  align-items: stretch;
+  display: flex;
+  gap: 16px;
+}
+
+.layout__left {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.layout__right {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list-x {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.list-y {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.textarea {
+  background-color: #333;
+  border-radius: 8px;
+  color: inherit;
+  font-family: monospace;
+  padding: 16px;
+  resize: vertical;
+}
+
+.tooltip {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  background-color: #333;
+  border-radius: 8px;
+  left: 32px;
+  opacity: 0;
+  padding: 16px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+.tooltip:hover .tooltiptext {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .layout {
+    flex-direction: column;
+  }
+
+  .layout__left {
+    order: 1;
+  }
+
+  .layout__right {
+    order: 2;
+  }
+}
