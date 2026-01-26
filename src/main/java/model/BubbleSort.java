@@ -3,45 +3,33 @@ package model;
 import java.util.List;
 
 public class BubbleSort<T extends Comparable<? super T>> extends SortAlgorithm<T> {
-  public void sort(List<T> list) {
-    int n = list.size();
-    boolean swapped;
-    do {
-      swapped = false;
-      for (int i = 1; i < n; i++) {
-        if (comp.compare(list.get(i - 1), list.get(i)) > 0) {
-          T tmp = list.get(i - 1);
-          list.set(i - 1, list.get(i));
-          list.set(i, tmp);
-          swapped = true;
+  public void sort(List<T> A, int sleepMs) {
+    int n = A.size();
+    for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n - 1 - i; j++) {
+        if (comp.compare(A.get(j), A.get(j + 1)) > 0) {
+          swap(A, j, j + 1);
         }
+        sleep(sleepMs);
       }
-      n--;
-    } while (swapped);
+    }
   }
   
-  public void sortWithVisualization(List<T> list) {
+  public void sortWithVisualization(List<T> A, int sleepMs) {
     fixedIndexes.clear();
-    int n = list.size();
-    record(list, -1, -1);
-    boolean swapped;
-    do {
-      swapped = false;
-      for (int i = 1; i < n; i++) {
-        record(list, i - 1, i);
-        if (comp.compare(list.get(i - 1), list.get(i)) > 0) {
-          T tmp = list.get(i - 1);
-          list.set(i - 1, list.get(i));
-          list.set(i, tmp);
-          swapped = true;
+    record(A, -1, -1);
+    int n = A.size();
+    for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n - 1 - i; j++) {
+        record(A, j, j + 1);
+        if (comp.compare(A.get(j), A.get(j + 1)) > 0) {
+          swap(A, j, j + 1);
         }
+        sleep(sleepMs);
       }
-      n--;
-      fixedIndexes.add(n);
-    } while (swapped);
-    for (int i = 0; i < n; i++) {
-      fixedIndexes.add(i);
+      fixedIndexes.add(n - 1 - i);
     }
-    record(list, -1, -1);
+    fixedIndexes.add(0);
+    record(A, -1, -1);
   }
 }

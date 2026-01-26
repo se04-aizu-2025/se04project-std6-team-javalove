@@ -3,73 +3,67 @@ package model;
 import java.util.List;
 
 public class HeapSort<T extends Comparable<? super T>> extends SortAlgorithm<T> {
-  public void sort(List<T> list) {
-    int n = list.size();
+  public void sort(List<T> A, int sleepMs) {
+    int n = A.size();
     for (int i = n / 2 - 1; i >= 0; i--) {
-      heapify(list, n, i);
+      heapify(A, n, i, sleepMs);
     }
     for (int i = n - 1; i > 0; i--) {
-      swap(list, 0, i);
-      heapify(list, i, 0);
+      swap(A, 0, i);
+      heapify(A, i, 0, sleepMs);
     }
   }
 
-  private void heapify(List<T> list, int size, int root) {
+  private void heapify(List<T> A, int size, int root, int sleepMs) {
     int largest = root;
     int left = 2 * root + 1;
     int right = 2 * root + 2;
-    if (left < size && comp.compare(list.get(left), list.get(largest)) > 0)
+    if (left < size && comp.compare(A.get(left), A.get(largest)) > 0) {
       largest = left;
-    if (right < size && comp.compare(list.get(right), list.get(largest)) > 0)
-      largest = right;
-    if (largest != root) {
-      swap(list, root, largest);
-      heapify(list, size, largest);
     }
+    if (right < size && comp.compare(A.get(right), A.get(largest)) > 0) {
+      largest = right;
+    }
+    if (largest != root) {
+      swap(A, root, largest);
+      heapify(A, size, largest, sleepMs);
+    }
+    sleep(sleepMs);
   }
-  
-  public void sortWithVisualization(List<T> list) {
+
+  public void sortWithVisualization(List<T> A, int sleepMs) {
     fixedIndexes.clear();
-    int n = list.size();
-    record(list, -1, -1);
+    record(A, -1, -1);
+    int n = A.size();
     for (int i = n / 2 - 1; i >= 0; i--) {
-      heapifyWithVisualization(list, n, i);
+      heapifyWithVisualization(A, n, i, sleepMs);
     }
     for (int i = n - 1; i > 0; i--) {
-      swap(list, 0, i);
+      swap(A, 0, i);
       fixedIndexes.add(i);
-      record(list, 0, i);
-      heapifyWithVisualization(list, i, 0);
+      record(A, 0, i);
+      heapifyWithVisualization(A, i, 0, sleepMs);
     }
     fixedIndexes.add(0);
-    record(list, -1, -1);
+    record(A, -1, -1);
   }
 
-  private void heapifyWithVisualization(List<T> list, int size, int root) {
+  private void heapifyWithVisualization(List<T> A, int size, int root, int sleepMs) {
     int largest = root;
     int left = 2 * root + 1;
     int right = 2 * root + 2;
-    if (left < size) {
-      record(list, root, left);
-      if (comp.compare(list.get(left), list.get(largest)) > 0) {
-        largest = left;
-      }
+    record(A, left, largest);
+    if (left < size && comp.compare(A.get(left), A.get(largest)) > 0) {
+      largest = left;
     }
-    if (right < size) {
-      record(list, largest, right);
-      if (comp.compare(list.get(right), list.get(largest)) > 0) {
-        largest = right;
-      }
+    record(A, right, largest);
+    if (right < size && comp.compare(A.get(right), A.get(largest)) > 0) {
+      largest = right;
     }
     if (largest != root) {
-      swap(list, root, largest);
-      heapifyWithVisualization(list, size, largest);
+      swap(A, root, largest);
+      heapifyWithVisualization(A, size, largest, sleepMs);
     }
-  }
-
-  private void swap(List<T> list, int i, int j) {
-    T tmp = list.get(i);
-    list.set(i, list.get(j));
-    list.set(j, tmp);
+    sleep(sleepMs);
   }
 }

@@ -7,35 +7,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MergeSort<T extends Comparable<? super T>> extends SortAlgorithm<T> {
-  public void sort(List<T> list) {
-    if (list.size() <= 1) return;
-    mergeSort(list, 0, list.size() - 1);
+  public void sort(List<T> A, int sleepMs) {
+    mergeSort(A, 0, A.size() - 1, sleepMs);
   }
 
-  private void mergeSort(List<T> list, int left, int right) {
-    if (left >= right) return;
+  private void mergeSort(List<T> A, int left, int right, int sleepMs) {
+    if (left >= right) {
+      return;
+    }
     int mid = (left + right) / 2;
-    mergeSort(list, left, mid);
-    mergeSort(list, mid + 1, right);
-    merge(list, left, mid, right);
+    mergeSort(A, left, mid, sleepMs);
+    mergeSort(A, mid + 1, right, sleepMs);
+    merge(A, left, mid, right, sleepMs);
   }
 
-  private void merge(List<T> list, int left, int mid, int right) {
-    List<T> temp = new ArrayList<>(right - left + 1);
+  private void merge(List<T> A, int left, int mid, int right, int sleepMs) {
     int i = left;
     int j = mid + 1;
+    List<T> temp = new ArrayList<>();
     while (i <= mid && j <= right) {
-      if (comp.compare(list.get(i), list.get(j)) <= 0) {
-        temp.add(list.get(i++));
+      if (comp.compare(A.get(i), A.get(j)) <= 0) {
+        temp.add(A.get(i++));
       } else {
-        temp.add(list.get(j++));
+        temp.add(A.get(j++));
       }
     }
-    while (i <= mid) temp.add(list.get(i++));
-    while (j <= right) temp.add(list.get(j++));
+    while (i <= mid) {
+      temp.add(A.get(i++));
+    }
+    while (j <= right) {
+      temp.add(A.get(j++));
+    }
     for (int k = 0; k < temp.size(); k++) {
-      int writeIndex = left + k;
-      list.set(writeIndex, temp.get(k));
+      A.set(left + k, temp.get(k));
+      sleep(sleepMs);
+    }
+  }
+
+  public void sortWithVisualization(List<T> A, int sleepMs) {
+    fixedIndexes.clear();
+    record(A, -1, -1);
+    mergeSortWithVisualization(A, 0, A.size() - 1, sleepMs);
+    for (int i = 0; i < A.size(); i++) {
+      fixedIndexes.add(i);
+    }
+    record(A, -1, -1);
+  }
+
+  private void mergeSortWithVisualization(List<T> A, int left, int right, int sleepMs) {
+    if (left >= right) {
+      return;
+    }
+    int mid = (left + right) / 2;
+    mergeSortWithVisualization(A, left, mid, sleepMs);
+    mergeSortWithVisualization(A, mid + 1, right, sleepMs);
+    mergeWithVisualization(A, left, mid, right, sleepMs);
+  }
+
+  private void mergeWithVisualization(List<T> A, int left, int mid, int right, int sleepMs) {
+    int i = left;
+    int j = mid + 1;
+    List<T> temp = new ArrayList<>();
+    while (i <= mid && j <= right) {
+      record(A, i, j, left, mid, right);
+      if (comp.compare(A.get(i), A.get(j)) <= 0) {
+        temp.add(A.get(i++));
+      } else {
+        temp.add(A.get(j++));
+      }
+    }
+    while (i <= mid) {
+      temp.add(A.get(i++));
+    }
+    while (j <= right) {
+      temp.add(A.get(j++));
+    }
+    for (int k = 0; k < temp.size(); k++) {
+      A.set(left + k, temp.get(k));
+      sleep(sleepMs);
     }
   }
   
@@ -79,46 +128,5 @@ public class MergeSort<T extends Comparable<? super T>> extends SortAlgorithm<T>
     }
     g.dispose();
     return img;
-  }
-  
-  public void sortWithVisualization(List<T> list) {
-    record(list, -1, -1);
-    if (list.size() <= 1) return;
-    mergeSortWithVisualization(list, 0, list.size() - 1);
-    for (int i = 0; i < list.size(); i++) {
-      fixedIndexes.add(i);
-    }
-    record(list, -1, -1);
-  }
-
-  private void mergeSortWithVisualization(List<T> list, int left, int right) {
-    if (left >= right) return;
-    int mid = (left + right) / 2;
-    mergeSortWithVisualization(list, left, mid);
-    mergeSortWithVisualization(list, mid + 1, right);
-    mergeWithVisualization(list, left, mid, right);
-  }
-
-  private void mergeWithVisualization(List<T> list, int left, int mid, int right) {
-    List<T> temp = new ArrayList<>(right - left + 1);
-    int i = left;
-    int j = mid + 1;
-    while (i <= mid && j <= right) {
-      record(list, i, j, left, mid, right);
-      if (comp.compare(list.get(i), list.get(j)) <= 0) {
-        temp.add(list.get(i++));
-      } else {
-        temp.add(list.get(j++));
-      }
-    }
-    while (i <= mid) {
-      temp.add(list.get(i++));
-    }
-    while (j <= right) {
-      temp.add(list.get(j++));
-    }
-    for (int k = 0; k < temp.size(); k++) {
-      list.set(left + k, temp.get(k));
-    }
   }
 }

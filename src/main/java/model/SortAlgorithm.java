@@ -27,21 +27,31 @@ public abstract class SortAlgorithm<T extends Comparable<? super T>> {
     return List.copyOf(frames);
   }
   
-  public void execute(List<T> list, boolean rev, boolean visu) {
+  public void execute(List<T> list, boolean rev, boolean visu, int cost) {
     comp = rev ? Comparator.reverseOrder() : Comparator.naturalOrder();
-    long start = System.nanoTime();
+    long start, end;
+    int sleepMs = (int) Math.pow(2, cost) - 1;
     if (visu) {
-      sortWithVisualization(list);
+      start = System.nanoTime();
+      sortWithVisualization(list, sleepMs);
+      end = System.nanoTime();
     } else {
-      sort(list);
+      start = System.nanoTime();
+      sort(list, sleepMs);
+      end = System.nanoTime();
     }
-    long end = System.nanoTime();
     this.list = list;
     time = (end - start) / 1_000_000.0;
   }
 
-  protected abstract void sort(List<T> list);
-  protected abstract void sortWithVisualization(List<T> list);
+  protected abstract void sort(List<T> A, int sleepMs);
+  protected abstract void sortWithVisualization(List<T> A, int sleepMs);
+
+  protected void swap(List<T> list, int i, int j) {
+    T tmp = list.get(i);
+    list.set(i, list.get(j));
+    list.set(j, tmp);
+  }
   
   protected void record(List<T> list, int i, int j) {
     frames.add(draw(list, i, j));
@@ -86,5 +96,16 @@ public abstract class SortAlgorithm<T extends Comparable<? super T>> {
     }
     g.dispose();
     return img;
+  }
+  
+  protected void sleep(int ms) {
+    if (ms == 0) {
+      return;
+    }
+    try {
+      Thread.sleep(ms);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
   }
 }

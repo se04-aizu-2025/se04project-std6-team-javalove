@@ -3,49 +3,35 @@ package model;
 import java.util.List;
 
 public class InsertionSort<T extends Comparable<? super T>> extends SortAlgorithm<T> {
-  public void sort(List<T> list) {
-    int n = list.size();
-    for (int i = 1; i < n; i++) {
-      T key = list.get(i);
+  public void sort(List<T> A, int sleepMs) {
+    for (int i = 1; i < A.size(); i++) {
+      T key = A.get(i);
       int j = i - 1;
-      boolean moved = false;
-      while (j >= 0 && comp.compare(list.get(j), key) > 0) {
-        list.set(j + 1, list.get(j));
+      while (j >= 0 && comp.compare(A.get(j), key) > 0) {
+        A.set(j + 1, A.get(j));
         j--;
-        moved = true;
+        sleep(sleepMs);
       }
-      if (moved) {
-        list.set(j + 1, key);
-      } else {
-        list.set(j + 1, key);
-      }
+      A.set(j + 1, key);
     }
   }
-
-  public void sortWithVisualization(List<T> list) {
+  
+  public void sortWithVisualization(List<T> A, int sleepMs) {
     fixedIndexes.clear();
-    int n = list.size();
-    record(list, -1, -1);
-    for (int i = 1; i < n; i++) {
-      T key = list.get(i);
+    record(A, -1, -1);
+    fixedIndexes.add(0);
+    for (int i = 1; i < A.size(); i++) {
+      T key = A.get(i);
       int j = i - 1;
-      while (j >= 0) {
-        record(list, j, j + 1);
-        if (comp.compare(list.get(j), key) > 0) {
-          list.set(j + 1, list.get(j));
-          j--;
-        } else {
-          break;
-        }
+      while (j >= 0 && comp.compare(A.get(j), key) > 0) {
+        record(A, j, i);
+        A.set(j + 1, A.get(j));
+        j--;
+        sleep(sleepMs);
       }
-      list.set(j + 1, key);
-      for (int k = 0; k <= i; k++) {
-        fixedIndexes.add(k);
-      }
-    }
-    for (int i = 0; i < n; i++) {
+      A.set(j + 1, key);
       fixedIndexes.add(i);
     }
-    record(list, -1, -1);
+    record(A, -1, -1);
   }
 }
