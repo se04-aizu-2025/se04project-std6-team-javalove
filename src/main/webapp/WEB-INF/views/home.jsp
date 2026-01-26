@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css/normalize.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <script src="js/cost-slider.js" defer></script>
   <script src="js/file-input.js" defer></script>
   <script src="js/random-input.js" defer></script>
   <script src="js/show-description.js" defer></script>
@@ -23,7 +24,7 @@
     <div>
       <h2>Input</h2>
       <form class="card list-y" action="sort" method="post">
-        <textarea class="textarea" id="in" name="in" rows="4" placeholder="Please enter numbers separated by spaces (e.g. &quot;6 1 7 4&quot;)." required><c:if test="${not empty in}"><c:out value="${in}" /></c:if></textarea>
+        <textarea class="textarea" id="in" name="in" rows="2" placeholder="Please enter numbers separated by spaces (e.g. &quot;6 1 7 4&quot;)." required><c:if test="${not empty in}"><c:out value="${in}" /></c:if></textarea>
         <div class="list-x">
           <span>Count:</span>
           <input class="textarea" type="number" id="count" name="count" value="<c:out value="${count}" />" min="1">
@@ -140,9 +141,31 @@
           <div class="list-x" id="delayBox">
             <span>Delay:</span>
             <input class="textarea" type="number" name="delay" min="20" max="2000" step="10" value="<c:out value="${delay}" />">
-            <span>ms</span>
+            <span>ms/frame</span>
+          </div>
+          <div class="tooltip">
+            <i class="fa-regular fa-circle-question"></i>
+            <div class="tooltiptext">
+              <span>If checked, allows sorting visualization.</span><br>
+              <span>Increasing the delay will result in slower visualization.</span><br>
+              <span>Visualization is not recommended for very large inputs.</span>
+            </div>
           </div>
           <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
+        </div>
+        <div class="list-x" id="delayBox">
+          <span id="costValue"></span>
+          <label>
+            <input type="range" name="cost" id="cost" min="0" max="10" value="<c:out value="${cost}" />">
+          </label>
+          <div class="tooltip">
+            <i class="fa-regular fa-circle-question"></i>
+            <div class="tooltiptext">
+              <span>Each iteration delays processing by 2^cost - 1 milliseconds.</span><br>
+              <span>If cost is 0, there is no delay.</span><br>
+              <span>A relatively low cost will result in a sufficient delay.</span>
+            </div>
+          </div>
         </div>
         <button class="btn" type="submit" style="margin-left: auto;"><i class="fa-solid fa-play"></i> Sort</button>
       </form>
