@@ -27,6 +27,7 @@ public class SortServlet extends HttpServlet {
     String min = request.getParameter("min");
     String max = request.getParameter("max");
     String delay = request.getParameter("delay");
+    int cost = Integer.parseInt(request.getParameter("cost"));
     Set<String> optSet = new HashSet<>();
     if (opt != null) {
       optSet = Set.of(opt);
@@ -44,6 +45,7 @@ public class SortServlet extends HttpServlet {
     session.setAttribute("max", max);
     session.setAttribute("visu", visu);
     session.setAttribute("delay", delay);
+    session.setAttribute("cost", cost);
     String[] tokens = in.trim().split("\\s+");
     for (String t : tokens) {
       if (!t.matches("-?\\d+")) {
@@ -54,7 +56,7 @@ public class SortServlet extends HttpServlet {
     }
     SortAlgorithm<Integer> out = SortFactory.create(algo);
     try {
-      out.execute(new ArrayList<>(Arrays.stream(tokens).map(Integer::parseInt).toList()), rev, visu);
+      out.execute(new ArrayList<>(Arrays.stream(tokens).map(Integer::parseInt).toList()), rev, visu, cost);
     } catch (NumberFormatException e) {
       session.setAttribute("err", "Please enter a value between -2^31 and 2^31-1.");
       response.sendRedirect("home");
