@@ -185,7 +185,10 @@
                 <div class="tooltiptext">
                   <span>Visualizes each step of the sorting algorithm.</span><br>
                   <span>Useful for understanding how elements move and how the algorithm progresses.</span><br>
-                  <span>Not recommended for large inputs due to performance impact.</span>
+                  <span>Not recommended for large inputs due to performance impact.</span><br><br>
+                  <span>ソートアルゴリズムの各ステップを可視化します。</span><br>
+                  <span>要素がどのように移動するか、アルゴリズムがどのように進行するかを理解するのに役立ちます。</span><br>
+                  <span>性能に影響するため、大きな入力には推奨されません。</span>
                 </div>
               </div>
               <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
@@ -200,7 +203,10 @@
                 <div class="tooltiptext">
                   <span>Adds an exponential delay to each iteration: (2<sup>cost</sup> − 1) ms.</span><br>
                   <span>Helps highlight differences in algorithmic time complexity.</span><br>
-                  <span>Small values are usually sufficient.</span>
+                  <span>Small values are usually sufficient.</span><br><br>
+                  <span>各イテレーションに指数的な遅延を追加します：(2<sup>cost</sup> − 1) ms。</span><br>
+                  <span>アルゴリズムの計算量の違いを強調するのに役立ちます。</span><br>
+                  <span>小さい値でも十分です。</span>
                 </div>
               </div>
             </div>
