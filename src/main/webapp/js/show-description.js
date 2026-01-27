@@ -91,7 +91,6 @@ const algorithms = {
 };
 
 const descriptionEl = document.getElementById('description');
-
 document.querySelectorAll('input[name="algo"]').forEach(radio => {
   radio.addEventListener('change', e => {
     const algo = algorithms[e.target.value];

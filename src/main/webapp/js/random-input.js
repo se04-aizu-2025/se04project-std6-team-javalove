@@ -29,6 +29,18 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     alert('The count must be a positive integer.');
     return;
   }
+  if (count < 1 || count > 99999) {
+    alert('Count must be between 1 and 99999.');
+    return;
+  }
+  if (min < -999 || min > 999) {
+    alert('Minimum value must be between -999 and 999.');
+    return;
+  }
+  if (max < -999 || max > 999) {
+    alert('Maximum value must be between -999 and 999.');
+    return;
+  }
   if (min > max) {
     alert('The minimum value must be less than or equal to the maximum value.');
     return;

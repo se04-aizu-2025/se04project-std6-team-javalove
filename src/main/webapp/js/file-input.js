@@ -1,6 +1,5 @@
 const fileInput = document.getElementById('fileInput');
 const textArea = document.getElementById('in');
-
 fileInput.addEventListener('change', function() {
   const file = fileInput.files[0];
   if (!file) return;

@@ -28,12 +28,16 @@
           <form class="card list-y" action="sort" method="post">
             <textarea class="textarea" id="in" name="in" rows="8" placeholder="Please enter numbers separated by spaces (e.g. &quot;6 1 7 4&quot;)." required><c:if test="${not empty in}"><c:out value="${in}" /></c:if></textarea>
             <div class="list-x">
-              <span>Count:</span>
-              <input class="textarea" type="number" id="count" name="count" value="<c:out value="${count}" />" min="1">
-              <span>Range:</span>
-              <input class="textarea" type="number" id="min" name="min" value="<c:out value="${min}" />">
-              <span>~</span>
-              <input class="textarea" type="number" id="max" name="max" value="<c:out value="${max}" />">
+              <div>
+                <span>Count:</span>
+                <input class="textarea" type="number" id="count" name="count" value="<c:out value="${count}" />" min="1" style="width: 100px;">
+              </div>
+              <div>
+                <span>Range:</span>
+                <input class="textarea" type="number" id="min" name="min" value="<c:out value="${min}" />" style="width: 100px;">
+                <span>~</span>
+                <input class="textarea" type="number" id="max" name="max" value="<c:out value="${max}" />" style="width: 100px;">
+              </div>
             </div>
             <div class="list-x">
               <div class="list-x" style="margin-left: auto;">
@@ -175,23 +179,23 @@
                 </c:choose>
                 <span>Visualize</span>
               </label>
-              <div class="list-x" id="delayBox">
+              <div id="delayBox">
                 <span>Delay:</span>
-                <input class="textarea" type="number" name="delay" min="20" max="2000" step="10" value="<c:out value="${delay}" />">
+                <input class="textarea" type="number" name="delay" min="20" max="2000" step="10" value="<c:out value="${delay}" />" style="width: 100px;">
                 <span>ms/frame</span>
-              </div>
-              <div class="tooltip">
-                <i class="fa-regular fa-circle-question"></i>
-                <div class="tooltiptext">
-                  <span>Visualizes each step of the sorting algorithm.</span><br>
-                  <span>Useful for understanding how elements move and how the algorithm progresses.</span><br>
-                  <span>Not recommended for large inputs due to performance impact.</span><br><br>
-                  <span>ソートアルゴリズムの各ステップを可視化します。</span><br>
-                  <span>要素がどのように移動するか、アルゴリズムがどのように進行するかを理解するのに役立ちます。</span><br>
-                  <span>性能に影響するため、大きな入力には推奨されません。</span>
+                <div class="tooltip">
+                  <i class="fa-regular fa-circle-question"></i>
+                  <div class="tooltiptext">
+                    <span>Visualizes each step of the sorting algorithm.</span><br>
+                    <span>Useful for understanding how elements move and how the algorithm progresses.</span><br>
+                    <span>Not recommended for large inputs due to performance impact.</span><br><br>
+                    <span>ソートアルゴリズムの各ステップを可視化します。</span><br>
+                    <span>要素がどのように移動するか、アルゴリズムがどのように進行するかを理解するのに役立ちます。</span><br>
+                    <span>性能に影響するため、大きな入力には推奨されません。</span>
+                  </div>
                 </div>
+                <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
               </div>
-              <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
             </div>
             <div class="list-x" id="delayBox">
               <span id="costValue"></span>
@@ -247,9 +251,9 @@
               <h2>Output</h2>
               <div class="list-y" style="align-items: center; display: flex; margin: 100px auto;">
                 <div style="margin: auto;">
-                  <i class="fa-solid fa-box-open fa-8x"></i>
+                  <i class="fa-solid fa-box-open fa-8x" style="color: #555;"></i>
                 </div>
-                <div style="text-align: center;">The data is empty.<br>The results will appear here once you start sorting.</div>
+                <div style="color: #555; text-align: center;">The data is empty.<br>The results will appear here once you start sorting.</div>
               </div>
             </div>
           </c:otherwise>
