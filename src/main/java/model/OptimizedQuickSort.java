@@ -68,7 +68,7 @@ public class OptimizedQuickSort<T extends Comparable<? super T>> extends QuickSo
     int i = low - 1;
     for (int j = low; j < high; j++) {
       sleep(sleepMs);
-      record(A, j, high);
+      record(A, i, j, high);
       if (comp.compare(A.get(j), pivot) <= 0) {
         i++;
         swap(A, i, j);
@@ -85,7 +85,7 @@ public class OptimizedQuickSort<T extends Comparable<? super T>> extends QuickSo
       while (j >= low) {
         sleep(sleepMs);
         if (comp.compare(A.get(j), key) > 0) {
-          A.set(j + 1, A.get(j));
+          set(A, j + 1, A.get(j));
           j--;
         } else {
           break;
@@ -103,7 +103,7 @@ public class OptimizedQuickSort<T extends Comparable<? super T>> extends QuickSo
         sleep(sleepMs);
         record(A, j, i);
         if (comp.compare(A.get(j), key) > 0) {
-          A.set(j + 1, A.get(j));
+          set(A, j + 1, A.get(j));
           j--;
         } else {
           break;

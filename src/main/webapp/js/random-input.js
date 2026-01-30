@@ -1,7 +1,10 @@
-function generateRandom(count, min, max) {
+function generateRandom(count, min, max, sorted = false) {
   const arr = [];
   for (let i = 0; i < count; i++) {
     arr.push(randomInt(min, max));
+  }
+  if (sorted) {
+    arr.sort((a, b) => a - b);
   }
   return arr.join(' ');
 }
@@ -14,6 +17,7 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   const countEl = document.getElementById('count');
   const minEl = document.getElementById('min');
   const maxEl = document.getElementById('max');
+  const sorted = document.getElementById('sorted');
   if (countEl.value.trim() === '' || minEl.value.trim() === '' || maxEl.value.trim() === '') {
     alert('Please fill in all fields with numeric values.');
     return;
@@ -45,6 +49,6 @@ document.getElementById('generateBtn').addEventListener('click', () => {
     alert('The minimum value must be less than or equal to the maximum value.');
     return;
   }
-  const output = generateRandom(count, min, max);
+  const output = generateRandom(count, min, max, sorted.checked);
   document.getElementById('in').value = output;
 });

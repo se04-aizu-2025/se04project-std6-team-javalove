@@ -9,8 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class SortAlgorithm<T extends Comparable<? super T>> {
+  protected static final Color WHITE = new Color(245, 246, 248);
+  protected static final Color BLACK = new Color(90, 90, 90);
+  protected static final Color BLUE = new Color(74, 144, 226);
+  protected static final Color GRAY = new Color(160, 160, 160);
+  protected static final Color ORANGE = new Color(243, 156, 18);
+  protected static final Color RED = new Color(231, 76, 60);
+  protected static final Color GREEN = new Color(46, 204, 113);
+  protected static final Color PURPLE = new Color(155, 89, 182);
+  protected static final Color PINK = new Color(233, 30, 99);
+  
   private List<T> list;
   private double time;
+  private long maxUsedMemory = 0;
   protected Comparator<? super T> comp;
   protected final List<BufferedImage> frames = new ArrayList<>();
   protected final Set<Integer> fixedIndexes = new HashSet<>();
@@ -19,8 +30,12 @@ public abstract class SortAlgorithm<T extends Comparable<? super T>> {
     return List.copyOf(list);
   }
   
-  public double getTime() {
-    return time;
+  public String getFormattedTime() {
+    return String.format("%f ms", time);
+  }
+  
+  public String getFormattedMaxUsedMemory() {
+    return String.format("%f MB", time / 1024.0 / 1024.0);
   }
   
   public List<BufferedImage> getFrames() {
@@ -51,54 +66,74 @@ public abstract class SortAlgorithm<T extends Comparable<? super T>> {
     T tmp = list.get(i);
     list.set(i, list.get(j));
     list.set(j, tmp);
+    record(list, i, j, true);
+  }
+  
+  protected void set(List<T> A, int index, T value) {
+    A.set(index, value);
   }
   
   protected void record(List<T> list, int i, int j) {
-    frames.add(draw(list, i, j));
+    frames.add(draw(list, i, j, false));
   }
   
-  protected BufferedImage draw(List<T> list, int highlightIndex1, int highlightIndex2) {
-    int barWidth = 800 / list.size() + 1;
-    int margin = barWidth * list.size() / 40;
-    int w = barWidth * list.size() + 2 * margin;
-    int h = w / 4;
-    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_INDEXED);
-    Graphics2D g = img.createGraphics();
-    g.setColor(new Color(245, 246, 248));
-    g.fillRect(0, 0, w, h);
-    int max = list.stream().mapToInt(e -> Integer.parseInt(e.toString())).max().orElse(0);
-    int min = list.stream().mapToInt(e -> Integer.parseInt(e.toString())).min().orElse(0);
+  protected void record(List<T> list, int i, int j, boolean isSwaped) {
+    frames.add(draw(list, i, j, isSwaped));
+  }
+  
+  protected BufferedImage draw(List<T> list, int highlightIndex1, int highlightIndex2, boolean isSwaped) {
+    final int size = list.size();
+    if (size == 0) {
+      return new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_INDEXED);
+    }
+    final int baseWidth = 800;
+    final int barWidth = baseWidth / size + 1;
+    final int margin = barWidth * size / 40;
+    final int canvasWidth = barWidth * size + margin * 2;
+    final int canvasHeight = canvasWidth / 4;
+    BufferedImage image = new BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_BYTE_INDEXED);
+    Graphics2D g = image.createGraphics();
+    g.setColor(WHITE);
+    g.fillRect(0, 0, canvasWidth, canvasHeight);
+    int[] values = new int[size];
+    int min = Integer.MAX_VALUE;
+    int max = Integer.MIN_VALUE;
+    for (int i = 0; i < size; i++) {
+      int v = Integer.parseInt(list.get(i).toString());
+      values[i] = v;
+      min = Math.min(min, v);
+      max = Math.max(max, v);
+    }
     max = Math.max(max, 0);
     min = Math.min(min, 0);
-    int drawableHeight = h - 2 * margin;
     int range = max - min;
+    if (range == 0) {
+      range = 1;
+    }
+    int drawableHeight = canvasHeight - margin * 2;
     int baselineY = margin + (int) ((double) max / range * drawableHeight);
-    g.setColor(new Color(180, 180, 180));
-    g.drawLine(margin, baselineY, w - margin, baselineY);
-    for (int i = 0; i < list.size(); i++) {
-      int v = Integer.parseInt(list.get(i).toString());
-      int barHeight = (int) (Math.abs((double) v) / range * drawableHeight);
+    g.setColor(BLACK);
+    g.drawLine(margin, baselineY, canvasWidth - margin, baselineY);
+    for (int i = 0; i < size; i++) {
+      int value = values[i];
+      int barHeight = (int) (Math.abs((double) value) / range * drawableHeight);
       int x = margin + i * barWidth;
-      int y;
-      if (v >= 0) {
-        y = baselineY - barHeight;
-      } else {
-        y = baselineY;
-      }
+      int y = value >= 0 ? baselineY - barHeight : baselineY;
       if (i == highlightIndex1 || i == highlightIndex2) {
-        g.setColor(new Color(255, 159, 67));
+        g.setColor(isSwaped ? RED : ORANGE);
       } else if (fixedIndexes.contains(i)) {
-        g.setColor(new Color(160, 160, 160));
+        g.setColor(GRAY);
       } else {
-        g.setColor(new Color(74, 144, 226));
+        g.setColor(BLUE);
       }
       g.fillRect(x + 1, y, barWidth - 1, barHeight);
     }
     g.dispose();
-    return img;
+    return image;
   }
   
   protected void sleep(int ms) {
+    recordMemory();
     if (ms == 0) {
       return;
     }
@@ -107,5 +142,11 @@ public abstract class SortAlgorithm<T extends Comparable<? super T>> {
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
+  }
+
+  private void recordMemory() {
+    Runtime rt = Runtime.getRuntime();
+    long used = rt.totalMemory() - rt.freeMemory();
+    maxUsedMemory = Math.max(maxUsedMemory, used);
   }
 }

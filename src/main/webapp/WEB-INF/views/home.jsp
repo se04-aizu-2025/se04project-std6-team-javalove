@@ -39,6 +39,17 @@
                 <input class="textarea" type="number" id="max" name="max" value="<c:out value="${max}" />" style="width: 100px;">
               </div>
             </div>
+            <label>
+              <c:choose>
+                <c:when test="${sorted}">
+                  <input type="checkbox" name="opt" id="sorted" value="sorted" checked>
+                </c:when>
+                <c:otherwise>
+                  <input type="checkbox" name="opt" id="sorted" value="sorted">
+                </c:otherwise>
+              </c:choose>
+              <span>Already Sorted</span>
+            </label>
             <div class="list-x">
               <div class="list-x" style="margin-left: auto;">
                 <label class="btn">
@@ -194,10 +205,10 @@
                     <span>性能に影響するため、大きな入力には推奨されません。</span>
                   </div>
                 </div>
-                <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
               </div>
+              <input class="textarea" style="opacity: 0; padding-left: 0; padding-right: 0; width: 0;">
             </div>
-            <div class="list-x" id="delayBox">
+            <div class="list-x">
               <span id="costValue"></span>
               <label>
                 <input type="range" name="cost" id="cost" min="0" max="10" value="<c:out value="${cost}" />">
@@ -232,12 +243,16 @@
                 <c:if test="${visu}">
                   <img src="gif" alt="Sorting Animation">
                 </c:if>
-                <span><c:out value="${out.getList()}" /></span>
+                <span style="max-height: 200px; overflow-y: auto;"><c:out value="${out.getList()}" /></span>
               </div>
             </div>
             <div>
               <h2>Execution Time</h2>
-              <div class="card"><c:out value="${out.getTime()} ms" /></div>
+              <div class="card"><c:out value="${out.getFormattedTime()}" /></div>
+            </div>
+            <div>
+              <h2>Max Used Memory</h2>
+              <div class="card"><c:out value="${out.getFormattedMaxUsedMemory()}" /></div>
             </div>
           </c:when>
           <c:when test="${not empty err}">

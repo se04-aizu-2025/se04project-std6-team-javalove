@@ -66,7 +66,6 @@ label {
 }
 
 .layout {
-  align-items: stretch;
   display: flex;
   gap: 16px;
 }

@@ -32,12 +32,14 @@ public class SortServlet extends HttpServlet {
     if (opt != null) {
       optSet = Set.of(opt);
     }
+    boolean sorted = optSet.contains("sorted");
     boolean rev = optSet.contains("rev");
     boolean visu = optSet.contains("visu");
     HttpSession session = request.getSession();
     session.removeAttribute("out");
     session.removeAttribute("err");
     session.setAttribute("in", in);
+    session.setAttribute("sorted", sorted);
     session.setAttribute("algo", algo);
     session.setAttribute("rev", rev);
     session.setAttribute("count", count);

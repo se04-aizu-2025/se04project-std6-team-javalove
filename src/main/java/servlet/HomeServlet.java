@@ -33,6 +33,9 @@ public class HomeServlet extends HttpServlet {
     if (session.getAttribute("cost") == null) {
       session.setAttribute("cost", 0);
     }
+    if (session.getAttribute("stress") == null) {
+      session.setAttribute("stress", 0);
+    }
 	  request.getRequestDispatcher("WEB-INF/views/home.jsp").forward(request, response);
   }
 }
